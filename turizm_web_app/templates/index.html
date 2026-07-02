@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туризм — Управление заказами</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+        h1 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #2c3e50; color: white; }
+        .form-container { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
+        input, select { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 16px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #219a52; }
+        .delete-btn { color: red; text-decoration: none; font-weight: bold; }
+        .delete-btn:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>📋 Заказы туров</h1>
+
+    <!-- Форма добавления заказа -->
+    <div class="form-container">
+        <h3>➕ Новый заказ</h3>
+        <form action="/add" method="POST">
+            <input type="text" name="customer_name" placeholder="Имя клиента" required>
+            <input type="text" name="customer_phone" placeholder="Телефон" required>
+            <input type="number" name="hotel_id" placeholder="ID отеля" required>
+            <input type="number" name="service_id" placeholder="ID услуги" required>
+            <input type="number" step="0.01" name="total_price" placeholder="Цена" required>
+            <select name="status" required>
+                <option value="новый">Новый</option>
+                <option value="подтвержден">Подтвержден</option>
+                <option value="оплачен">Оплачен</option>
+                <option value="отменен">Отменен</option>
+            </select>
+            <button type="submit">➕ Добавить</button>
+        </form>
+    </div>
+
+    <!-- Таблица заказов -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Клиент</th>
+                <th>Телефон</th>
+                <th>Отель</th>
+                <th>Услуга</th>
+                <th>Цена</th>
+                <th>Статус</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.customer_name }}</td>
+                <td>{{ order.customer_phone }}</td>
+                <td>{{ order.hotel_name }}</td>
+                <td>{{ order.service_name }}</td>
+                <td>{{ order.total_price }} ₽</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <a href="/delete/{{ order.id }}" class="delete-btn" onclick="return confirm('Удалить заказ?')">✖</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
